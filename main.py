@@ -1,7 +1,7 @@
 import numpy as np
 import pandas as pd
 
-def compute_sse(R_true, R_pred_round):
+def SSE(R_true, R_pred_round):
     mask = (R_true != 0)
     diff = R_true[mask] - R_pred_round[mask]
     return np.sum(diff ** 2)
@@ -19,6 +19,7 @@ def ALS(R, k, lambda_reg, n_iters):
 
     for it in range(n_iters):
 
+        # Update Users
         for i in range(m):
             idx_items = np.where(observed_mask[i, :])[0]
             if idx_items.size == 0:
@@ -32,6 +33,7 @@ def ALS(R, k, lambda_reg, n_iters):
 
             U[i, :] = np.linalg.solve(A, b)
 
+        # Update Items
         for j in range(n):
             idx_users = np.where(observed_mask[:, j])[0]
             if idx_users.size == 0:
@@ -48,7 +50,7 @@ def ALS(R, k, lambda_reg, n_iters):
         R_hat = U @ V.T
         R_hat_clipped = np.clip(R_hat, 1, 5)
         R_hat_round = np.floor(R_hat_clipped + 0.5)
-        sse = compute_sse(R, R_hat_round)
+        sse = SSE(R, R_hat_round)
         print(f"Iteration {it+1}/{n_iters} => SSE : {sse:.2f}")
 
     return U, V
@@ -59,7 +61,7 @@ R = df.values.astype(float)
 print(f"Shape of R: {R.shape[0]}x{R.shape[1]}")
 
 K = 130     # تعداد فاکتورهای نهان
-LAMBDA = 0.1  # ضریب منظم‌سازی (λ)
+LAMBDA = 0.1  # ضریب منظم سازی (λ)
 N_ITERS = 15  # تعداد تکرار ALS
 
 U, V = ALS(R, k=K, lambda_reg=LAMBDA, n_iters=N_ITERS)
@@ -70,7 +72,7 @@ R_hat_clipped = np.clip(R_hat, 1, 5)
 
 R_hat_round = np.floor(R_hat_clipped + 0.5)
 
-sse = compute_sse(R, R_hat_round)
+sse = SSE(R, R_hat_round)
 print("Final SSE:", sse)
 
 df_out = pd.DataFrame(R_hat_round)
