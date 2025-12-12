@@ -7,26 +7,20 @@ The goal is to predict missing ratings (zeros in the input matrix) and reconstru
 
 ## Problem Description
 
-The input is a `1000 × 200` rating matrix stored in a CSV file:
+The input is a rating matrix stored in a CSV file with 1000 rows and 200 columns:
 
 - Each **row** corresponds to a user.
-- Each **column** corresponds to an item (e.g., a movie).
-- Values **1 to 5** represent real ratings given by users.
-- Value **0** means *no rating* (a missing value, not a true zero rating).
+- Each **column** corresponds to an item (for example, a movie).
+- Values from **1 to 5** are real ratings given by users.
+- Value **0** means the user did not rate that item (missing data, not a real rating of zero).
 
-We want to factorize the rating matrix \( R \) as:
+The idea is to represent this large rating matrix as the product of two smaller matrices:
 
-\[
-R \approx U V^T
-\]
+- A **user matrix** `U`, where each row is a latent feature vector describing a user.
+- An **item matrix** `V`, where each row is a latent feature vector describing an item.
 
-where:
-
-- \( U \in \mathbb{R}^{m \times k} \): latent feature matrix for users  
-- \( V \in \mathbb{R}^{n \times k} \): latent feature matrix for items  
-- \( k \): number of latent factors (dimensionality of the hidden feature space)
-
-Once \( U \) and \( V \) are learned, we can predict ratings for all user–item pairs, including entries that were originally zero.
+Multiplying `U` by the transpose of `V` gives an approximation of the original rating matrix.  
+Using this approximation, we can predict ratings for entries that were originally zero.
 
 ---
 
@@ -38,7 +32,7 @@ Once \( U \) and \( V \) are learned, we can predict ratings for all user–item
 - Output completed rating matrix (Excel):  
   `output/R_completed_round.xlsx`
 
-> Make sure the `dataset/` folder contains the CSV file and the `output/` folder exists before running the script.
+> Make sure the `dataset/` folder contains the CSV file and that the `output/` folder exists before running the script.
 
 ---
 
@@ -49,7 +43,7 @@ The code is written in Python and uses the following libraries:
 - Python 3.x  
 - `numpy`  
 - `pandas`  
-- `openpyxl` (for writing the Excel file)
+- `openpyxl` (needed for writing the Excel file)
 
 Install them with:
 
