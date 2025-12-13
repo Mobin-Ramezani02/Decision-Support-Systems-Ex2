@@ -60,9 +60,9 @@ df = pd.read_csv("dataset/matrix_1000x200_sparse40.csv")
 R = df.values.astype(float)
 print(f"Shape of R: {R.shape[0]}x{R.shape[1]}")
 
-K = 130     # تعداد فاکتورهای نهان
+K = 70     # تعداد فاکتورهای نهان
 LAMBDA = 0.1  # ضریب منظم سازی (λ)
-N_ITERS = 15  # تعداد تکرار ALS
+N_ITERS = 20  # تعداد تکرار ALS
 
 U, V = ALS(R, k=K, lambda_reg=LAMBDA, n_iters=N_ITERS)
 
@@ -76,4 +76,4 @@ sse = SSE(R, R_hat_round)
 print("Final SSE:", sse)
 
 df_out = pd.DataFrame(R_hat_round)
-df_out.to_excel("output/R_completed_round.xlsx", index=False, header=False)
+df_out.to_excel("output/R_completed_round.xlsx", index=False)
