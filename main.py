@@ -60,7 +60,7 @@ df = pd.read_csv("dataset/matrix_1000x200_sparse40.csv")
 R = df.values.astype(float)
 print(f"Shape of R: {R.shape[0]}x{R.shape[1]}")
 
-K = 70     # تعداد فاکتورهای نهان 120
+K = 120     # تعداد فاکتورهای نهان 120
 LAMBDA = 0.1  # ضریب منظم سازی (λ)
 N_ITERS = 20  # تعداد تکرار ALS
 
